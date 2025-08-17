@@ -16,7 +16,6 @@ fun MainViewController() =
         },
     ) {
         App(
-            windowSizeClass = calculateWindowSizeClass(),
-            disableDiskCache = true,
+            windowSizeClass = calculateWindowSizeClass()
         )
     }

@@ -16,12 +16,11 @@ fun main() {
         Window(
             onCloseRequest = ::exitApplication,
             alwaysOnTop = true,
-            title = "TVManiak",
+            title = "TvManiak",
         ) {
             val windowSizeClass = calculateWindowSizeClass()
             App(
                 windowSizeClass = windowSizeClass,
-                disableDiskCache = false,
             )
         }
     }

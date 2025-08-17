@@ -22,8 +22,7 @@
 
     <!-- Navigation -->
     <string name="nav_tv_shows">TV Shows</string>
-    <string name="nav_search">Search</string>
-    <string name="nav_people">People</string>
+
     <string name="nav_watchlist">Watchlist</string>
 
     <!-- Loading -->
