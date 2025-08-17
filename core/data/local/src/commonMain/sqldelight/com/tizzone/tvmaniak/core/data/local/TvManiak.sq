@@ -1,0 +1,144 @@
+import kotlin.Boolean;
+
+CREATE TABLE tv_show(
+  id INTEGER NOT NULL PRIMARY KEY,
+  name TEXT NOT NULL,
+  summary TEXT,
+  rating REAL,
+  image_url TEXT,
+  genres TEXT,
+  language TEXT,
+  type TEXT,
+  status TEXT,
+  updated INTEGER NOT NULL,
+  page INTEGER NOT NULL,
+  score REAL
+);
+
+CREATE TABLE remote_keys (
+    show_id INTEGER NOT NULL PRIMARY KEY,
+    prev_key INTEGER,
+    next_key INTEGER,
+    last_updated INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (show_id) REFERENCES tv_show(id) ON DELETE CASCADE
+);
+
+CREATE TABLE cache_metadata (
+    id INTEGER NOT NULL PRIMARY KEY,
+    last_refresh_time INTEGER NOT NULL,
+    is_valid INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE TABLE watchlist (
+    show_id INTEGER NOT NULL PRIMARY KEY,
+    added_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+    FOREIGN KEY (show_id) REFERENCES tv_show(id) ON DELETE CASCADE
+);
+
+-- Queries Watchlist
+addToWatchlist:
+INSERT OR IGNORE INTO watchlist(show_id)
+VALUES (?);
+
+removeFromWatchlist:
+DELETE FROM watchlist WHERE show_id = ?;
+
+isInWatchlist:
+SELECT COUNT(*) > 0 AS in_watchlist
+FROM watchlist
+WHERE show_id = ?;
+
+getWatchlist:
+SELECT
+    tv_show.*,
+    watchlist.added_at AS watchlist_added_at,
+    1 AS is_in_watchlist
+FROM tv_show
+INNER JOIN watchlist ON tv_show.id = watchlist.show_id
+ORDER BY watchlist.added_at DESC;
+
+
+-- Queries
+countAllShows:
+SELECT COUNT(*) FROM tv_show;
+
+getPagedShows:
+SELECT * FROM tv_show
+ORDER BY page ASC, id ASC
+LIMIT ? OFFSET ?;
+
+searchShowByName:
+SELECT * FROM tv_show
+WHERE name LIKE ('% ' || :name)
+OR name LIKE (:name || ' %')
+ORDER BY
+    score DESC,
+    CASE
+        WHEN name LIKE :name THEN 1
+        WHEN name LIKE :name || '%' THEN 2
+        WHEN name LIKE '%' || :name THEN 3
+        ELSE 4
+    END ASC,
+    name ASC;
+
+getShowById:
+SELECT * FROM tv_show WHERE id = ?;
+
+insertShow:
+INSERT OR REPLACE INTO tv_show(
+    id, name, language, type, status, genres, rating, image_url, summary, page, updated, score
+) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+insertShows:
+INSERT OR REPLACE INTO tv_show(
+    id, name, language, type, status, genres, rating, image_url, summary, page, updated, score
+) VALUES (?, ?, ?,?, ?, ?, ?,?, ?, ?, ?, ?);
+
+deleteAllShows:
+DELETE FROM tv_show;
+
+deleteShowsByPage:
+DELETE FROM tv_show WHERE page = ?;
+
+-- Remote keys queries
+insertRemoteKey:
+INSERT OR REPLACE INTO remote_keys(show_id, prev_key, next_key, last_updated)
+VALUES (?, ?, ?, strftime('%s', 'now'));
+
+getRemoteKeyByShowId:
+SELECT * FROM remote_keys WHERE show_id = ?;
+
+deleteAllRemoteKeys:
+DELETE FROM remote_keys;
+
+getOldestRemoteKey:
+SELECT * FROM remote_keys ORDER BY last_updated ASC LIMIT 1;
+
+getNewestRemoteKey:
+SELECT * FROM remote_keys ORDER BY last_updated DESC LIMIT 1;
+
+-- Cache metadata queries
+setCacheValid:
+INSERT OR REPLACE INTO cache_metadata(id, last_refresh_time, is_valid)
+VALUES (1, strftime('%s', 'now'), 1);
+
+setCacheInvalid:
+UPDATE cache_metadata SET is_valid = 0 WHERE id = 1;
+
+getCacheMetadata:
+SELECT * FROM cache_metadata WHERE id = 1;
+
+isCacheExpired:
+SELECT CASE
+    WHEN is_valid = 0 THEN 1
+    WHEN (strftime('%s', 'now') - last_refresh_time) > ? THEN 1
+    ELSE 0
+END AS is_expired
+FROM cache_metadata WHERE id = 1;
+
+-- Indexes for performance
+CREATE INDEX tv_show_page_idx ON tv_show(page);
+CREATE INDEX tv_show_updated_idx ON tv_show(updated);
+CREATE INDEX remote_keys_last_updated_idx ON remote_keys(last_updated);
+CREATE INDEX watchlist_show_id_idx ON watchlist(show_id);
+CREATE INDEX watchlist_added_at_idx ON watchlist(added_at DESC);

@@ -1,0 +1,48 @@
+package com.tizzone.tvmaniak.core.model
+
+data class TvShowSummary(
+    val id: Int,
+    val name: String,
+    val summary: String,
+    val type: String,
+    val language: String,
+    val genres: List<String>,
+    val status: String,
+    val rating: Float? = null,
+    val smallImageUrl: String,
+    val updated: Long,
+    val score: Float? = 0f,
+)
+
+enum class Genre(
+    val displayName: String,
+) {
+    ACTION("Action"),
+    ADULT("Adult"),
+    ADVENTURE("Adventure"),
+    ANIME("Anime"),
+    CHILDREN("Children"),
+    COMEDY("Comedy"),
+    CRIME("Crime"),
+    DIY("DIY"),
+    DRAMA("Drama"),
+    ESPIONAGE("Espionage"),
+    FAMILY("Family"),
+    FANTASY("Fantasy"),
+    FOOD("Food"),
+    HISTORY("History"),
+    HORROR("Horror"),
+    LEGAL("Legal"),
+    MEDICAL("Medical"),
+    MUSIC("Music"),
+    MYSTERY("Mystery"),
+    NATURE("Nature"),
+    ROMANCE("Romance"),
+    SCIENCE_FICTION("ScienceFiction"),
+    SPORTS("Sports"),
+    SUPERNATURAL("Supernatural"),
+    THRILLER("Thriller"),
+    TRAVEL("Travel"),
+    WAR("War"),
+    WESTERN("Western"),
+}

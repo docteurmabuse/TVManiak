@@ -1,0 +1,36 @@
+<resources>
+    <string name="tv_shows_screen">TvShowsScreen</string>
+    <string name="tv_maniak_loading">TvManiakLoading</string>
+    <string name="something_went_wrong">Oups, something went wrong</string>
+    <string name="error">Error</string>
+    <string name="no_tv_shows">No tv shows found</string>
+    <string name="grid_view">Grid view</string>
+    <string name="list_view">List view</string>
+    <string name="switch_list_view">Switch to list view</string>
+    <string name="switch_grid_view">Switch to grid view</string>
+
+    <!-- Search -->
+    <string name="search_placeholder">Search Shows..</string>
+    <string name="search">Search</string>
+    <string name="close_search">Close search</string>
+    <string name="search_default_placeholder">Search...</string>
+
+    <!-- Content Descriptions -->
+    <string name="image_miniature">Image miniature</string>
+    <string name="favorite_icon">Favorite</string>
+    <string name="close_button">Close</string>
+
+    <!-- Navigation -->
+    <string name="nav_tv_shows">TV Shows</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_people">People</string>
+    <string name="nav_watchlist">Watchlist</string>
+
+    <!-- Loading -->
+    <string name="loading_more">Loading more...</string>
+
+    <!-- Sections -->
+    <string name="cast_section">Cast</string>
+    <string name="watchlist_title">Watchlist</string>
+    <string name="watchlist_placeholder">watchlist</string>
+</resources>
