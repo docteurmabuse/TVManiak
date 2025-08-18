@@ -74,23 +74,6 @@ private fun SearchShowByName.asEntity(): TvShowSummaryEntity =
         override val isInWatchlist: Long = this@asEntity.is_in_watchlist
     }
 
-private fun GetShowById.asEntity(): TvShowSummaryEntity =
-    object : TvShowSummaryEntity {
-        override val id: Long = this@asEntity.id
-        override val name: String = this@asEntity.name
-        override val summary: String? = this@asEntity.summary
-        override val type: String? = this@asEntity.type
-        override val language: String? = this@asEntity.language
-        override val genres: String? = this@asEntity.genres
-        override val status: String? = this@asEntity.status
-        override val rating: Double? = this@asEntity.rating
-        override val imageUrl: String? = this@asEntity.image_url
-        override val largeImageUrl: String? = this@asEntity.large_image_url
-        override val updated: Long = this@asEntity.updated
-        override val score: Double? = this@asEntity.score
-        override val isInWatchlist: Long = this@asEntity.is_in_watchlist
-    }
-
 private fun GetWatchlist.asEntity(): TvShowSummaryEntity =
     object : TvShowSummaryEntity {
         override val id: Long = this@asEntity.id
@@ -125,6 +108,7 @@ fun GetShowById.toDomainModel(): TvShowDetail =
         status = this.status ?: "",
         rating = this.rating?.toFloat(),
         largeImageUrl = this.large_image_url ?: this.image_url ?: "",
+        smallImageUrl = this.image_url ?: "",
         updated = this.updated,
         score = this.score?.toFloat(),
         isInWatchlist = this.is_in_watchlist == 1L,

@@ -4,7 +4,6 @@ import app.cash.paging.PagingData
 import com.tizzone.tvmaniak.core.common.utils.ApiResponse
 import com.tizzone.tvmaniak.core.common.utils.DatabaseError
 import com.tizzone.tvmaniak.core.common.utils.Either
-import com.tizzone.tvmaniak.core.common.utils.fold
 import com.tizzone.tvmaniak.core.model.ShowCastSummary
 import com.tizzone.tvmaniak.core.model.TvShowDetail
 import com.tizzone.tvmaniak.core.model.TvShowSummary
@@ -105,24 +104,6 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
             emit(PagingData.from(allFakeShows))
         }
 
-    override fun getShowDetails(showId: Int): Flow<Either<ApiResponse, TvShowDetail>> =
-        flow {
-            // Just combines local with watchlist status
-            getShowById(showId).collect { localResult ->
-                val show =
-                    localResult.fold(
-                        onLeft = { null },
-                        onRight = { it },
-                    )
-
-                if (show != null) {
-                    emit(Either.Right(show))
-                } else {
-                    emit(Either.Left(ApiResponse.HttpError))
-                }
-            }
-        }
-
     override fun getShowDetailsRemote(showId: Int): Flow<Either<ApiResponse, TvShowDetail>> =
         flow {
             delay(150 + random.nextLong(0, 200))
@@ -139,8 +120,9 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
                         genres = showSummary.genres,
                         status = showSummary.status,
                         rating = showSummary.rating,
-                        largeImageUrl = showSummary.imageUrl,
-                        isInWatchlist = false, // Remote doesn't know about watchlist
+                        largeImageUrl = showSummary.largeImageUrl,
+                        smallImageUrl = showSummary.imageUrl,
+                        isInWatchlist = false,
                         updated = showSummary.updated,
                     )
                 emit(Either.Right(detail))
@@ -262,7 +244,7 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
             }
         }
 
-    override fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail?>> =
+    override fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail>> =
         flow {
             delay(30 + random.nextLong(0, 50))
 
@@ -286,14 +268,19 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
                         genres = summary.genres,
                         status = summary.status,
                         rating = summary.rating,
-                        largeImageUrl = summary.imageUrl,
+                        largeImageUrl = summary.largeImageUrl,
+                        smallImageUrl = summary.imageUrl,
                         summary = summary.summary,
                         updated = summary.updated,
                         isInWatchlist = summary.isInWatchList,
                     )
                 }
 
-            emit(Either.Right(detailShow))
+            if (detailShow != null) {
+                emit(Either.Right(detailShow))
+            } else {
+                emit(Either.Left(DatabaseError.ItemNotFound))
+            }
         }
 
     override fun getWatchlistTvShows(): Flow<Either<DatabaseError, List<TvShowSummary>>> =

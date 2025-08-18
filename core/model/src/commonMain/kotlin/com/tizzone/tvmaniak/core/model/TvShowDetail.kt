@@ -24,6 +24,7 @@ data class TvShowDetail(
     val genres: List<String>,
     val status: String,
     val rating: Float? = null,
+    val smallImageUrl: String,
     val largeImageUrl: String,
     val summary: String,
     val isInWatchlist: Boolean = false,

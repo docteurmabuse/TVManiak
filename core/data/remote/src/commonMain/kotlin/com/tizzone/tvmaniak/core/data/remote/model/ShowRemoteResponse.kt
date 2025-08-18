@@ -57,6 +57,7 @@ fun ShowRemoteResponse.toShowDetail(): TvShowDetail =
         status = status,
         rating = rating?.average?.toFloat() ?: 0f,
         largeImageUrl = image?.original ?: "",
+        smallImageUrl = image?.medium ?: "",
         summary = summary ?: "",
         updated = updated,
     )

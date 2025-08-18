@@ -15,7 +15,6 @@ import co.touchlab.kermit.Logger
 import com.tizzone.tvmaniak.core.common.utils.ApiResponse
 import com.tizzone.tvmaniak.core.common.utils.DatabaseError
 import com.tizzone.tvmaniak.core.common.utils.Either
-import com.tizzone.tvmaniak.core.common.utils.fold
 import com.tizzone.tvmaniak.core.data.local.di.TvManiakDatabaseWrapper
 import com.tizzone.tvmaniak.core.data.remote.TvManiakRemoteDataSource
 import com.tizzone.tvmaniak.core.data.remote.model.CastRemoteResponse
@@ -27,7 +26,6 @@ import com.tizzone.tvmaniak.core.model.TvShowDetail
 import com.tizzone.tvmaniak.core.model.TvShowSummary
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
@@ -106,30 +104,6 @@ class TvShowRepositoryImpl(
                     }
                 },
             ).flow
-        }
-
-    // Keep for backward compatibility - combines local cache with watchlist status
-    override fun getShowDetails(showId: Int): Flow<Either<ApiResponse, TvShowDetail>> =
-        combine(
-            getShowById(showId),
-            isTvShowInWatchList(showId),
-        ) { localShow, watchlistStatus ->
-            val localResult =
-                localShow.fold(
-                    onLeft = { null },
-                    onRight = { it },
-                )
-
-            val isInWatchlist =
-                watchlistStatus.fold(
-                    onLeft = { false },
-                    onRight = { it },
-                )
-
-            // Only return local cached data with updated watchlist status
-            localResult?.let { cachedShow ->
-                Either.Right(cachedShow.copy(isInWatchlist = isInWatchlist))
-            } ?: Either.Left(ApiResponse.HttpError) // No local cache available
         }
 
     override fun getShowDetailsRemote(showId: Int): Flow<Either<ApiResponse, TvShowDetail>> =
@@ -240,7 +214,7 @@ class TvShowRepositoryImpl(
             }
             ?: flowOf(Either.Left(DatabaseError.DatabaseNotAvailable))
 
-    override fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail?>> =
+    override fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail>> =
         tvManiakQueries
             ?.getShowById(showId.toLong())
             ?.asFlow()
@@ -325,7 +299,7 @@ class TvShowRepositoryImpl(
                     status = show.status,
                     genres = show.genres.joinToString(","),
                     rating = show.rating?.toDouble(),
-                    image_url = show.largeImageUrl, // Use large for backward compatibility
+                    image_url = show.smallImageUrl,
                     large_image_url = show.largeImageUrl,
                     summary = show.summary,
                     page = 0,

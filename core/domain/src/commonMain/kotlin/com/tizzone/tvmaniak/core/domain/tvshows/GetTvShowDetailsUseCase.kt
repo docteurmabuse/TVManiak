@@ -40,7 +40,7 @@ class GetTvShowDetailsUseCase(
                 remoteResult.fold(
                     onLeft = {
                         // Remote failed, try local cache as fallback
-                        val localResult = tvShowRepository.getShowDetails(showId).first()
+                        val localResult = tvShowRepository.getShowById(showId).first()
                         localResult.fold(
                             onLeft = {
                                 // Both remote and local failed

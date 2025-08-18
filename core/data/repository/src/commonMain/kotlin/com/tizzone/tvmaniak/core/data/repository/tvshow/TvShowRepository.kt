@@ -19,8 +19,6 @@ import kotlinx.coroutines.flow.Flow
 interface TvShowRepository {
     fun getTvShows(): Flow<PagingData<TvShowSummary>>
 
-    fun getShowDetails(showId: Int): Flow<Either<ApiResponse, TvShowDetail>>
-
     fun getShowDetailsRemote(showId: Int): Flow<Either<ApiResponse, TvShowDetail>>
 
     fun searchTvShowsLocal(query: String): Flow<List<TvShowSummary>>
@@ -35,7 +33,7 @@ interface TvShowRepository {
 
     fun isTvShowInWatchList(showId: Int): Flow<Either<DatabaseError, Boolean>>
 
-    fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail?>>
+    fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail>>
 
     fun getWatchlistTvShows(): Flow<Either<DatabaseError, List<TvShowSummary>>>
 
