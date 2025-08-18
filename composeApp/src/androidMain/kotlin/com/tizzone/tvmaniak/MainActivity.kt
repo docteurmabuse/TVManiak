@@ -7,12 +7,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -25,7 +22,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             App(
-                windowSizeClass = calculateWindowSizeClass(this@MainActivity),
+                windowSizeClass = calculateWindowSizeClass(),
             )
         }
     }
@@ -36,6 +33,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppAndroidPreview() {
     App(
-        windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(400.dp, 900.dp)),
+        windowSizeClass = calculateWindowSizeClass(),
     )
 }

@@ -38,6 +38,7 @@ lazy-pagination-compose = "1.7.1"
 ksoup = "0.6.0"
 composeMaterial3WindowsSize = "1.8.2"
 paging = "3.3.0-alpha02-0.5.1"
+material3WindowsSize = "0.5.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -92,6 +93,7 @@ ksoup = { module = "com.mohamedrejeb.ksoup:ksoup-html", version.ref = "ksoup" }
 compose-material3-windowSize = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "composeMaterial3WindowsSize"}
 paging-common = { module = "app.cash.paging:paging-common", version.ref = "paging" }
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
+material3-window-multiplateform = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "material3WindowsSize" }
 
 [plugins]
 ktLint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktLint" }

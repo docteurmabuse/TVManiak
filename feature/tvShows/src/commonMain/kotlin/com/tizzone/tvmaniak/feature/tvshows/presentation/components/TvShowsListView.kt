@@ -10,10 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
@@ -43,7 +39,6 @@ fun TvShowsListView(
     windowSizeClass: WindowSizeClass,
     listState: LazyListState,
 ) {
-    var isDetailScopeActive by remember { mutableStateOf(false) }
     LazyColumn(
         state = listState,
         modifier =

@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +29,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import co.touchlab.kermit.Logger
 import com.tizzone.tvmaniak.core.designsystem.animation.SharedElementKeys
 import com.tizzone.tvmaniak.core.designsystem.animation.SharedElementTransitions
 import com.tizzone.tvmaniak.core.designsystem.component.RichHtmlText
@@ -39,7 +41,7 @@ import com.tizzone.tvmaniak.core.model.TvShowSummary
 import com.tizzone.tvmaniak.feature.tvshows.model.TvShowsEvent
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun TvShowSummaryItemList(
     modifier: Modifier,
@@ -50,6 +52,14 @@ fun TvShowSummaryItemList(
     tvShow: TvShowSummary,
     windowSizeClass: WindowSizeClass,
 ) {
+    val currentWindowSizeClass = calculateWindowSizeClass()
+    val ligneSize =
+        when (windowSizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> 3
+            WindowWidthSizeClass.Medium -> 4
+            else -> 5
+        }
+
     val cardShape = RoundedCornerShape(TvManiakSpacing.small)
     val sharedKey = SharedElementKeys(tvShow.id).cardKey
     with(sharedTransitionScope) {
@@ -111,11 +121,12 @@ fun TvShowSummaryItemList(
                         modifier = Modifier.padding(top = TvManiakSpacing.small),
                         color = MaterialTheme.colorScheme.primary,
                     )
+                    Logger.d("tvShow.summary screen size: ${currentWindowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact}")
                     RichHtmlText(
                         modifier = Modifier.padding(top = TvManiakSpacing.small),
                         color = MaterialTheme.colorScheme.primary,
                         html = tvShow.summary,
-                        maxLines = if (windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact) 4 else 7,
+                        maxLines = ligneSize,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.bodySmall,
                     )
@@ -163,7 +174,7 @@ fun TvShowSummaryItemListPreview() {
             status = "Ended",
             rating = 6.5f,
             imageUrl = "https://static.tvmaze.com/uploads/images/medium_portrait/81/202627.jpg",
-            largeImageUrl = "https://static.tvmaze.com/uploads/images/original_portrait/81/202627.jpg" ,
+            largeImageUrl = "https://static.tvmaze.com/uploads/images/original_portrait/81/202627.jpg",
             updated = 1704794122,
         )
     SharedTransitionScope {
@@ -180,10 +191,7 @@ fun TvShowSummaryItemListPreview() {
                 sharedTransitionScope = this@SharedTransitionScope,
                 navigationAnimatedContentScope = currentAnimatedContentScope,
                 tvShow = tvShow,
-                windowSizeClass =
-                    WindowSizeClass.calculateFromSize(
-                        size = DpSize(width = 360.dp, height = 640.dp),
-                    ),
+                windowSizeClass = calculateWindowSizeClass(),
             )
         }
     }

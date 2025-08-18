@@ -15,6 +15,23 @@ import kotlin.random.Random
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+/**
+ * Fake implementation of [TvShowRepository] for testing purposes.
+ *
+ * This repository simulates network delays and occasional errors for realistic testing scenarios.
+ * It maintains an in-memory list of TV shows and a watchlist.
+ *
+ * The [random] property is used to introduce variability in delays and error occurrences.
+ *
+ * Key features:
+ * - Provides a predefined list of fake TV shows.
+ * - Simulates network delays for remote operations.
+ * - Simulates occasional network and database errors.
+ * - Manages an in-memory watchlist.
+ * - Supports pagination for TV show listings.
+ * - Supports local and remote search functionality with simulated relevance scoring.
+ * - Allows insertion and updating of TV show summaries and details.
+ */
 class FakeTvShowRepositoryImpl : TvShowRepository {
     private val allFakeShows = mutableListOf<TvShowSummary>()
     private val watchlist = mutableSetOf<Int>()
@@ -79,12 +96,11 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
         )
 
     override fun getTvShows(): Flow<PagingData<TvShowSummary>> =
-        kotlinx.coroutines.flow.flow {
+        flow {
             // Initialize fake shows if empty
             if (allFakeShows.isEmpty()) {
                 allFakeShows.addAll(getFakeShows())
             }
-
             // Emit PagingData with all fake shows
             emit(PagingData.from(allFakeShows))
         }
@@ -134,7 +150,7 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
         }
 
     override fun searchTvShowsLocal(query: String): Flow<List<TvShowSummary>> =
-        kotlinx.coroutines.flow.flow {
+        flow {
             delay(50 + random.nextLong(0, 100)) // Local search should be faster
             emit(searchTvShowsLocalSync(query))
         }

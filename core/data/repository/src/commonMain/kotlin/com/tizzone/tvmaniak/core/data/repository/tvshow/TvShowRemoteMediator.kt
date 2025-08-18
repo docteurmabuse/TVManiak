@@ -16,6 +16,15 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.io.IOException
 
+/**
+ * RemoteMediator implementation for fetching and caching TV shows from a remote data source.
+ * This class handles pagination, cache expiration, and data synchronization between the remote API
+ * and the local database.
+ *
+ * @param tvManiakRemoteDataSource The remote data source for fetching TV shows.
+ * @param tvManiakDatabase The local database wrapper for storing and retrieving TV show data.
+ * @param ioDispatcher The coroutine dispatcher for performing I/O operations.
+ */
 @OptIn(ExperimentalPagingApi::class)
 class TvShowRemoteMediator(
     private val tvManiakRemoteDataSource: TvManiakRemoteDataSource,

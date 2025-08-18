@@ -17,7 +17,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.navigation.compose)
             implementation(libs.coil.compose)
-            implementation(libs.compose.material3.windowSize)
+            implementation(libs.material3.window.multiplateform)
             implementation(libs.paging.compose.common)
         }
     }

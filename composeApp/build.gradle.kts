@@ -52,7 +52,7 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.compose.material3)
-            implementation(libs.compose.material3.windowSize)
+            implementation(libs.material3.window.multiplateform)
             implementation(libs.materialKolor)
             implementation(libs.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodelCompose)

@@ -9,6 +9,13 @@ import com.tizzone.tvmaniak.core.model.TvShowDetail
 import com.tizzone.tvmaniak.core.model.TvShowSummary
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Repository interface for managing TV show data.
+ *
+ * This interface defines the contract for accessing and manipulating TV show information,
+ * including fetching lists of shows, retrieving details for specific shows,
+ * searching for shows, managing watchlist status, and interacting with local and remote data sources.
+ */
 interface TvShowRepository {
     fun getTvShows(): Flow<PagingData<TvShowSummary>>
 

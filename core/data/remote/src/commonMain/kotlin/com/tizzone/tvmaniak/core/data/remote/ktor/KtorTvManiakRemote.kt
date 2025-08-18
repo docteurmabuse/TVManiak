@@ -12,6 +12,12 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 
+/**
+ * Ktor implementation of the [TvManiakRemoteDataSource] interface.
+ * This class is responsible for making network requests to the TVManiak API.
+ *
+ * @property tvManiakClient The [HttpClient] used to make network requests.
+ */
 class KtorTvManiakRemote(
     private val tvManiakClient: HttpClient,
 ) : TvManiakRemoteDataSource {

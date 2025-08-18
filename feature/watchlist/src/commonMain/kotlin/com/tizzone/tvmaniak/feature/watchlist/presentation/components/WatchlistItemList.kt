@@ -25,10 +25,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.tizzone.tvmaniak.core.designsystem.component.RichHtmlText
 import com.tizzone.tvmaniak.core.designsystem.component.TvManiakImage
 import com.tizzone.tvmaniak.core.designsystem.component.TvManiakRating
 import com.tizzone.tvmaniak.core.designsystem.spacing.TvManiakSpacing
 import com.tizzone.tvmaniak.core.model.TvShowSummary
+import com.tizzone.tvmaniak.resources.Res
+import com.tizzone.tvmaniak.resources.remove_from_watchlist
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun WatchlistItemList(
@@ -76,8 +80,8 @@ fun WatchlistItemList(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = tvShow.summary,
+                RichHtmlText(
+                    html = tvShow.summary,
                     style = MaterialTheme.typography.bodySmall,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
@@ -93,7 +97,7 @@ fun WatchlistItemList(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "Remove from watchlist",
+                    contentDescription = stringResource(Res.string.remove_from_watchlist),
                     tint = MaterialTheme.colorScheme.error,
                 )
             }
