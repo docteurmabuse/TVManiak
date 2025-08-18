@@ -23,6 +23,7 @@ fun NavGraphBuilder.watchlistGraph(
 ) {
     composable<WatchlistNavigation> { entry ->
         WatchlistScreenRoute(
+            onNavigateToDetails = onTvShowClick,
         )
     }
 }

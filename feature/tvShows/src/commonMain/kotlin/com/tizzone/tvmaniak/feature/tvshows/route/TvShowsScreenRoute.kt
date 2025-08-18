@@ -48,6 +48,6 @@ fun TvShowsScreenRoute(
         searchQuery = searchQuery,
         onRefreshList = { tvShows.refresh() },
         gridState = gridState,
-        listState = listState
-        )
+        listState = listState,
+    )
 }

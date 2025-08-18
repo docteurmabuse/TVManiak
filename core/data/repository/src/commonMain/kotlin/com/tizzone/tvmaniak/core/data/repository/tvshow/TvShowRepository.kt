@@ -2,6 +2,7 @@ package com.tizzone.tvmaniak.core.data.repository.tvshow
 
 import app.cash.paging.PagingData
 import com.tizzone.tvmaniak.core.common.utils.ApiResponse
+import com.tizzone.tvmaniak.core.common.utils.DatabaseError
 import com.tizzone.tvmaniak.core.common.utils.Either
 import com.tizzone.tvmaniak.core.model.ShowCastSummary
 import com.tizzone.tvmaniak.core.model.TvShowDetail
@@ -10,8 +11,28 @@ import kotlinx.coroutines.flow.Flow
 
 interface TvShowRepository {
     fun getTvShows(): Flow<PagingData<TvShowSummary>>
-    suspend fun getShowDetails(showId: Int): Either<ApiResponse, TvShowDetail>
-    suspend fun searchTvShowsLocal(query: String): List<TvShowSummary>
-    suspend fun searchTvShowsRemote(query: String): Either<ApiResponse, List<TvShowSummary>>
+
+    fun getShowDetails(showId: Int): Flow<Either<ApiResponse, TvShowDetail>>
+
+    fun getShowDetailsRemote(showId: Int): Flow<Either<ApiResponse, TvShowDetail>>
+
+    fun searchTvShowsLocal(query: String): Flow<List<TvShowSummary>>
+
+    fun searchTvShowsRemote(query: String): Flow<Either<ApiResponse, List<TvShowSummary>>>
+
     suspend fun getShowCast(showId: Int): Either<ApiResponse, List<ShowCastSummary>>
+
+    suspend fun addTvShowToWatchList(showId: Int): Either<DatabaseError, Unit>
+
+    suspend fun removeTvShowFromWatchList(showId: Int): Either<DatabaseError, Unit>
+
+    fun isTvShowInWatchList(showId: Int): Flow<Either<DatabaseError, Boolean>>
+
+    fun getShowById(showId: Int): Flow<Either<DatabaseError, TvShowDetail?>>
+
+    fun getWatchlistTvShows(): Flow<Either<DatabaseError, List<TvShowSummary>>>
+
+    suspend fun insertOrUpdateShows(shows: List<TvShowSummary>): Either<DatabaseError, Unit>
+
+    suspend fun insertOrUpdateShowDetail(show: TvShowDetail): Either<DatabaseError, Unit>
 }

@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.tizzone.tvmaniak.core.designsystem.color.AppColors.YellowRating
 import com.tizzone.tvmaniak.resources.Res
-import com.tizzone.tvmaniak.resources.favorite_icon
+import com.tizzone.tvmaniak.resources.rating_icon
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -32,7 +32,7 @@ fun TvManiakRating(
         Icon(
             modifier = Modifier,
             imageVector = Icons.Default.Star,
-            contentDescription = stringResource(Res.string.favorite_icon),
+            contentDescription = stringResource(Res.string.rating_icon),
             tint = YellowRating,
         )
     }

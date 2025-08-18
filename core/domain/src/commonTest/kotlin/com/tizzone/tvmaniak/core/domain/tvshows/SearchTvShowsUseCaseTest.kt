@@ -3,6 +3,7 @@ package com.tizzone.tvmaniak.core.domain.tvshows
 import com.tizzone.tvmaniak.core.data.repository.tvshow.FakeTvShowRepositoryImpl
 import com.tizzone.tvmaniak.core.domain.di.testDomainModule
 import com.tizzone.tvmaniak.core.model.TvShowSummary
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -38,7 +39,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "Under" // Search for a show we know exists
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             assertTrue(searchResults.isNotEmpty(), "Should find results for '$query'")
@@ -58,7 +59,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = ""
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             assertTrue(searchResults.isEmpty())
@@ -72,7 +73,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "Person" // Search for "Person of Interest"
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             assertTrue(searchResults.isNotEmpty(), "Should find results for '$query'")
@@ -90,7 +91,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "Interest" // Should match "Person of Interest"
 
             // When - test that we can get results (local fallback works)
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then - should have results from local search even if remote fails
             // Note: Since we reduced remote failure rate to 5%, this should usually pass
@@ -105,7 +106,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "NonExistentShow123"
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             assertTrue(searchResults.isEmpty())
@@ -119,7 +120,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "Bitten"
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             val ids = searchResults.map { it.id }
@@ -134,7 +135,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "Drama" // Should match shows with Drama genre
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             // Remote results have updated timestamps added in FakeTvShowRepositoryImpl
@@ -150,7 +151,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val query = "Science" // Should match shows with Science-Fiction genre
 
             // When
-            val searchResults = searchTvShowsUseCase(query)
+            val searchResults = searchTvShowsUseCase(query).first()
 
             // Then
             if (searchResults.size > 1) {
@@ -159,7 +160,7 @@ class SearchTvShowsUseCaseTest : KoinTest {
                     val nextScore = searchResults[i + 1].score ?: 0f
                     assertTrue(
                         currentScore >= nextScore,
-                        "Results should be sorted by score descending: $currentScore should be >= $nextScore"
+                        "Results should be sorted by score descending: $currentScore should be >= $nextScore",
                     )
                 }
             } else if (searchResults.size == 1) {
@@ -175,14 +176,15 @@ class SearchTvShowsUseCaseTest : KoinTest {
             val queries = listOf("Dome", "Person", "Bitten", "Drama", "Science")
 
             // When - simulate concurrent searches
-            val results = queries.map { query ->
-                searchTvShowsUseCase(query)
-            }
+            val results =
+                queries.map { query ->
+                    searchTvShowsUseCase(query).first()
+                }
 
             // Then
             results.forEach { result ->
                 // Each search should complete successfully
-                assertTrue(result is List<TvShowSummary>)
+                assertTrue(result.isNotEmpty() || result.isEmpty())
             }
         }
     }

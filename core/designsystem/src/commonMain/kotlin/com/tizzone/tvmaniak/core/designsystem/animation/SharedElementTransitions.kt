@@ -16,7 +16,7 @@ import androidx.compose.animation.slideOutHorizontally
 
 @OptIn(ExperimentalAnimationSpecApi::class)
 object SharedElementTransitions {
-    const val TRANSITION_DURATION = 400
+    const val TRANSITION_DURATION = 300
     const val FADE_DURATION = 150
 
     fun <T> materialContainerTransformSpec() =

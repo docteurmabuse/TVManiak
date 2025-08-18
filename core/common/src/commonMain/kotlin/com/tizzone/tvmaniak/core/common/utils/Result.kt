@@ -46,6 +46,18 @@ sealed interface ApiResponse {
     data object IOException : ApiResponse
 }
 
+sealed interface DatabaseError {
+    data object OperationFailed : DatabaseError
+
+    data class Unknown(
+        val exception: Exception,
+    ) : DatabaseError
+
+    data object ItemNotFound : DatabaseError
+
+    data object DatabaseNotAvailable : DatabaseError
+}
+
 /**
  * Extension function to convert a Flow<T> to a Flow<Result<T>>
  */
@@ -59,4 +71,16 @@ inline fun <T> Result<T>.getOrElse(onFailure: (exception: Throwable?) -> T): T =
     when (this) {
         is Result.Success -> data
         is Result.Error -> onFailure(exception)
+    }
+
+/**
+ * Extension function to handle both success and failure cases of Either
+ */
+inline fun <A, B, C> Either<A, B>.fold(
+    onLeft: (A) -> C,
+    onRight: (B) -> C,
+): C =
+    when (this) {
+        is Either.Left -> onLeft(value)
+        is Either.Right -> onRight(value)
     }

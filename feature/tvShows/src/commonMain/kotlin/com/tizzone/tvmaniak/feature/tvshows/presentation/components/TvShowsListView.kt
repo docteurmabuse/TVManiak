@@ -20,6 +20,7 @@ import app.cash.paging.compose.LazyPagingItems
 import com.tizzone.tvmaniak.core.designsystem.component.TvManiakError
 import com.tizzone.tvmaniak.core.designsystem.component.TvManiakLoading
 import com.tizzone.tvmaniak.core.model.TvShowSummary
+import com.tizzone.tvmaniak.feature.tvshows.model.TvShowsEvent
 import com.tizzone.tvmaniak.resources.Res
 import com.tizzone.tvmaniak.resources.no_tv_shows
 import org.jetbrains.compose.resources.stringResource
@@ -35,8 +36,8 @@ fun TvShowsListView(
     contentPadding: PaddingValues,
     tvShows: LazyPagingItems<TvShowSummary>,
     onTvShowClick: (Int) -> Unit,
+    onEvent: (TvShowsEvent) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
-    animatedContentScope: AnimatedContentScope,
     navigationAnimatedContentScope: AnimatedContentScope,
     modifier: Modifier = Modifier,
     windowSizeClass: WindowSizeClass,
@@ -54,24 +55,27 @@ fun TvShowsListView(
             is LoadState.Loading -> {
                 item(key = REFRESH_LOADING_KEY) {
                     TvManiakLoading(
-                        modifier = Modifier
+                        modifier = Modifier,
                     )
                 }
             }
+
             is LoadState.Error -> {
                 val refreshError = tvShows.loadState.refresh as LoadState.Error
                 item(key = REFRESH_ERROR_KEY) {
                     TvManiakError(
                         modifier = Modifier,
-                        text = refreshError.error.message
-                            ?: stringResource(Res.string.no_tv_shows)
+                        text =
+                            refreshError.error.message
+                                ?: stringResource(Res.string.no_tv_shows),
                     )
                 }
             }
+
             is LoadState.NotLoading -> {
                 items(
                     count = tvShows.itemCount,
-                    key = { index -> tvShows[index]?.id ?: "item_$index" }
+                    key = { index -> tvShows[index]?.id ?: "item_$index" },
                 ) { index ->
                     tvShows[index]?.let { tvShow ->
                         with(sharedTransitionScope) {
@@ -79,14 +83,12 @@ fun TvShowsListView(
                                 modifier = modifier,
                                 tvShow = tvShow,
                                 onTvShowClick = {
-                                    isDetailScopeActive = true
                                     onTvShowClick(tvShow.id)
                                 },
+                                onEvent = onEvent,
                                 sharedTransitionScope = sharedTransitionScope,
-                                animatedContentScope = animatedContentScope,
                                 navigationAnimatedContentScope = navigationAnimatedContentScope,
-                                isDetailScopeActive = isDetailScopeActive,
-                                windowSizeClass = windowSizeClass
+                                windowSizeClass = windowSizeClass,
                             )
                         }
                     }
@@ -97,20 +99,23 @@ fun TvShowsListView(
             is LoadState.Loading -> {
                 item(key = APPEND_LOADING_KEY) {
                     TvManiakLoading(
-                        modifier = Modifier
+                        modifier = Modifier,
                     )
                 }
             }
+
             is LoadState.Error -> {
                 val appendError = tvShows.loadState.append as LoadState.Error
                 item(key = APPEND_ERROR_KEY) {
                     TvManiakError(
                         modifier = Modifier,
-                        text = appendError.error.message
-                            ?: stringResource(Res.string.no_tv_shows)
+                        text =
+                            appendError.error.message
+                                ?: stringResource(Res.string.no_tv_shows),
                     )
                 }
             }
+
             is LoadState.NotLoading -> {
                 // No additional UI needed
             }

@@ -41,9 +41,10 @@ fun ShowRemoteResponse.toShowSummary(searchScore: Float?): TvShowSummary =
         genres = genres,
         status = status,
         rating = rating?.average?.toFloat() ?: 0f,
-        smallImageUrl = image?.medium ?: "",
+        imageUrl = image?.medium ?: "",
+        largeImageUrl = image?.original ?: "",
         updated = updated,
-        score = searchScore ?: 0f
+        score = searchScore ?: 0f,
     )
 
 fun ShowRemoteResponse.toShowDetail(): TvShowDetail =
@@ -57,6 +58,7 @@ fun ShowRemoteResponse.toShowDetail(): TvShowDetail =
         rating = rating?.average?.toFloat() ?: 0f,
         largeImageUrl = image?.original ?: "",
         summary = summary ?: "",
+        updated = updated,
     )
 
 @Serializable

@@ -1,6 +1,5 @@
 package com.tizzone.tvmaniak.feature.tvshows.presentation
 
-import TvShowsGridView
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -35,11 +34,15 @@ import app.cash.paging.compose.LazyPagingItems
 import com.tizzone.tvmaniak.core.common.utils.GRID_VIEW_ICON
 import com.tizzone.tvmaniak.core.designsystem.component.TvManiakLoading
 import com.tizzone.tvmaniak.core.designsystem.component.TvManiakSearchTopBar
+import com.tizzone.tvmaniak.core.designsystem.spacing.TvManiakSpacing
 import com.tizzone.tvmaniak.core.model.TvShowSummary
 import com.tizzone.tvmaniak.feature.tvshows.model.TvShowsEvent
+import com.tizzone.tvmaniak.feature.tvshows.presentation.components.TvShowsGridView
 import com.tizzone.tvmaniak.feature.tvshows.presentation.components.TvShowsListView
 import com.tizzone.tvmaniak.resources.Res
 import com.tizzone.tvmaniak.resources.search_placeholder
+import com.tizzone.tvmaniak.resources.switch_grid_view
+import com.tizzone.tvmaniak.resources.switch_list_view
 import com.tizzone.tvmaniak.resources.tv_shows_screen
 import org.jetbrains.compose.resources.stringResource
 
@@ -64,15 +67,13 @@ fun TvShowsScreen(
         if (isGridView) {
             // Switching to grid - sync position from list to grid
             val currentIndex = listState.firstVisibleItemIndex
-            if (currentIndex > 0) {
-                gridState.scrollToItem(currentIndex)
-            }
+            val currentOffset = listState.firstVisibleItemScrollOffset
+            gridState.scrollToItem(currentIndex, currentOffset)
         } else {
             // Switching to list - sync position from grid to list
             val currentIndex = gridState.firstVisibleItemIndex
-            if (currentIndex > 0) {
-                listState.scrollToItem(currentIndex)
-            }
+            val currentOffset = gridState.firstVisibleItemScrollOffset
+            listState.scrollToItem(currentIndex, currentOffset)
         }
     }
 
@@ -111,10 +112,15 @@ fun TvShowsScreen(
                             } else {
                                 Icons.Outlined.GridView
                             },
-                        contentDescription = if (isGridView) "Switch to list view" else "Switch to grid view",
+                        contentDescription =
+                            if (isGridView) {
+                                stringResource(Res.string.switch_list_view)
+                            } else {
+                                stringResource(Res.string.switch_grid_view)
+                            },
                         modifier =
                             Modifier
-                                .padding(vertical = 8.dp)
+                                .padding(end = TvManiakSpacing.screenPadding)
                                 .testTag(GRID_VIEW_ICON)
                                 .clickable {
                                     onEvent(TvShowsEvent.ToggleViewMode)
@@ -140,7 +146,7 @@ fun TvShowsScreen(
             ) {
                 if (tvShows.itemCount == 0 && tvShows.loadState.refresh is androidx.paging.LoadState.Loading) {
                     TvManiakLoading(
-                        modifier = Modifier
+                        modifier = Modifier,
                     )
                 } else {
                     with(sharedTransitionScope) {
@@ -151,30 +157,30 @@ fun TvShowsScreen(
                                 fadeIn(animationSpec = tween(300)) togetherWith
                                     fadeOut(animationSpec = tween(300))
                             },
-                            modifier = Modifier
+                            modifier = Modifier,
                         ) { targetIsGridView ->
                             if (targetIsGridView) {
                                 TvShowsGridView(
                                     modifier = Modifier,
                                     onTvShowClick = onTvShowClick,
-                                    contentPadding = PaddingValues(top = 16.dp),
+                                    onEvent = onEvent,
+                                    contentPadding = PaddingValues(top = TvManiakSpacing.screenPadding),
                                     tvShows = tvShows,
                                     sharedTransitionScope = sharedTransitionScope,
-                                    animatedContentScope = this@AnimatedContent,
                                     navigationAnimatedContentScope = animatedContentScope,
-                                    gridState = gridState
+                                    gridState = gridState,
                                 )
                             } else {
                                 TvShowsListView(
                                     modifier = Modifier,
                                     onTvShowClick = onTvShowClick,
-                                    contentPadding = PaddingValues(top = 16.dp),
+                                    onEvent = onEvent,
+                                    contentPadding = PaddingValues(top = TvManiakSpacing.screenPadding),
                                     tvShows = tvShows,
                                     sharedTransitionScope = sharedTransitionScope,
-                                    animatedContentScope = this@AnimatedContent,
                                     navigationAnimatedContentScope = animatedContentScope,
                                     windowSizeClass = windowSizeClass,
-                                    listState = listState
+                                    listState = listState,
                                 )
                             }
                         }

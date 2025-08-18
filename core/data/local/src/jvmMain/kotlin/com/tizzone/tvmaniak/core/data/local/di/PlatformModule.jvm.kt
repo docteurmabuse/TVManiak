@@ -7,8 +7,9 @@ import org.koin.dsl.module
 actual val platformModule =
     module {
         single {
-            val driver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
-                .also { TvManiakDatabase.Schema.create(it) }
+            val driver =
+                JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+                    .also { TvManiakDatabase.Schema.create(it) }
             TvManiakDatabaseWrapper(TvManiakDatabase(driver))
         }
     }

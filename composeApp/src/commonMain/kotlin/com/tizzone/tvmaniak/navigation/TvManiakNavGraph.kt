@@ -37,7 +37,7 @@ fun TvManiakNavGraph(
                                 navController.navigateToTvShowDetail(tvShowId)
                             },
                             sharedTransitionScope = this@SharedTransitionLayout,
-                            windowSizeClass = windowSizeClass
+                            windowSizeClass = windowSizeClass,
                         )
                         detailTvShowScreen(
                             onBackClick = navController::navigateUp,

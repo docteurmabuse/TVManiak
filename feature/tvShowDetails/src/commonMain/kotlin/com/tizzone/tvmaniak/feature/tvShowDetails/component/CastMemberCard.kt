@@ -39,7 +39,7 @@ fun CastMemberCard(actor: ShowCastSummary) {
                     Modifier
                         .size(80.dp)
                         .clip(CircleShape),
-                cacheKey = null
+                cacheKey = null,
             )
             Text(
                 text = actor.name,

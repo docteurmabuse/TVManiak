@@ -26,9 +26,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App(
-    windowSizeClass: WindowSizeClass,
-) {
+fun App(windowSizeClass: WindowSizeClass) {
     TVManiakExpressiveTheme(
         seedColor = MaterialTheme.colorScheme.primary,
     ) {
@@ -56,6 +54,7 @@ fun App(
                                 selectedDestination = index
                                 when (destination.route) {
                                     is String -> {}
+
                                     // Skip unimplemented routes
                                     else -> {
                                         navController.navigate(destination.route)
@@ -86,7 +85,7 @@ fun App(
                         .fillMaxSize()
                         .padding(bottom = paddingValues.calculateBottomPadding()),
                 navController = navController,
-                windowSizeClass = windowSizeClass
+                windowSizeClass = windowSizeClass,
             )
         }
     }

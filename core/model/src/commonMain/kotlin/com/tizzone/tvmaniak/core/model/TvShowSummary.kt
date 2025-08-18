@@ -9,9 +9,11 @@ data class TvShowSummary(
     val genres: List<String>,
     val status: String,
     val rating: Float? = null,
-    val smallImageUrl: String,
+    val imageUrl: String,
+    val largeImageUrl: String,
     val updated: Long,
     val score: Float? = 0f,
+    val isInWatchList: Boolean = false,
 )
 
 enum class Genre(

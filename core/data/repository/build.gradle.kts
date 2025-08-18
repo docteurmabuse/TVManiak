@@ -13,6 +13,7 @@ kotlin {
             implementation(libs.paging.common)
             implementation(libs.paging.compose.common)
             implementation(libs.sqlDelight.paging)
+            implementation(libs.sqlDelight.extensions)
             implementation(libs.kermit)
         }
     }

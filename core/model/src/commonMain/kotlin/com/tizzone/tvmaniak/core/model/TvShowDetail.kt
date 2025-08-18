@@ -10,4 +10,7 @@ data class TvShowDetail(
     val rating: Float? = null,
     val largeImageUrl: String,
     val summary: String,
+    val isInWatchlist: Boolean = false,
+    val score: Float? = null,
+    val updated: Long,
 )

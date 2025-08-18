@@ -27,6 +27,7 @@ fun TvShowDetailScreenRoute(
     TvShowDetailScreen(
         uiState = uiState,
         onBackClick = onBackClick,
+        onEvent = viewModel::onEvent,
         sharedTransitionScope = sharedTransitionScope,
         animatedContentScope = animatedContentScope,
     )

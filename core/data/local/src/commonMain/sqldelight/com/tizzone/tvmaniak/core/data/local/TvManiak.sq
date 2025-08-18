@@ -6,6 +6,7 @@ CREATE TABLE tv_show(
   summary TEXT,
   rating REAL,
   image_url TEXT,
+  large_image_url TEXT,
   genres TEXT,
   language TEXT,
   type TEXT,
@@ -62,37 +63,70 @@ ORDER BY watchlist.added_at DESC;
 countAllShows:
 SELECT COUNT(*) FROM tv_show;
 
+/**
+ * @return com.tizzone.tvmaniak.core.database.model.PagedTvShow
+ */
 getPagedShows:
-SELECT * FROM tv_show
-ORDER BY page ASC, id ASC
+SELECT
+    tv_show.*,
+    CASE
+        WHEN watchlist.show_id IS NOT NULL THEN 1
+        ELSE 0
+    END AS is_in_watchlist
+FROM tv_show
+LEFT JOIN watchlist ON tv_show.id = watchlist.show_id
+ORDER BY tv_show.page ASC, tv_show.id ASC
 LIMIT ? OFFSET ?;
 
+/**
+ * @return com.tizzone.tvmaniak.core.database.model.PagedTvShow
+ */
 searchShowByName:
-SELECT * FROM tv_show
-WHERE name LIKE ('% ' || :name)
-OR name LIKE (:name || ' %')
-ORDER BY
-    score DESC,
+SELECT
+    tv_show.*,
     CASE
-        WHEN name LIKE :name THEN 1
-        WHEN name LIKE :name || '%' THEN 2
-        WHEN name LIKE '%' || :name THEN 3
-        ELSE 4
+        WHEN watchlist.show_id IS NOT NULL THEN 1
+        ELSE 0
+    END AS is_in_watchlist
+FROM tv_show
+LEFT JOIN watchlist ON tv_show.id = watchlist.show_id
+WHERE tv_show.name LIKE ('% ' || :name || '%')
+   OR tv_show.name LIKE (:name || '%')
+   OR tv_show.name LIKE ('%' || :name)
+ORDER BY
+    tv_show.score DESC,
+    CASE
+        WHEN tv_show.name LIKE :name THEN 1
+        WHEN tv_show.name LIKE :name || '%' THEN 2
+        WHEN tv_show.name LIKE '%' || :name THEN 3
+        WHEN tv_show.name LIKE '%' || :name || '%' THEN 4
+        ELSE 5
     END ASC,
-    name ASC;
+    tv_show.name ASC;
 
+/**
+ * @return com.tizzone.tvmaniak.core.database.model.PagedTvShow
+ */
 getShowById:
-SELECT * FROM tv_show WHERE id = ?;
+SELECT
+    tv_show.*,
+    CASE
+        WHEN watchlist.show_id IS NOT NULL THEN 1
+        ELSE 0
+    END AS is_in_watchlist
+FROM tv_show
+LEFT JOIN watchlist ON tv_show.id = watchlist.show_id
+WHERE tv_show.id = :id;
 
 insertShow:
 INSERT OR REPLACE INTO tv_show(
-    id, name, language, type, status, genres, rating, image_url, summary, page, updated, score
-) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    id, name, language, type, status, genres, rating, image_url, large_image_url, summary, page, updated, score
+) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 insertShows:
 INSERT OR REPLACE INTO tv_show(
-    id, name, language, type, status, genres, rating, image_url, summary, page, updated, score
-) VALUES (?, ?, ?,?, ?, ?, ?,?, ?, ?, ?, ?);
+    id, name, language, type, status, genres, rating, image_url, large_image_url, summary, page, updated, score
+) VALUES (?, ?, ?,?, ?, ?, ?,?, ?, ?, ?, ?, ?);
 
 deleteAllShows:
 DELETE FROM tv_show;

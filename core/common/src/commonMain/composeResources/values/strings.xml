@@ -17,7 +17,8 @@
 
     <!-- Content Descriptions -->
     <string name="image_miniature">Image miniature</string>
-    <string name="favorite_icon">Favorite</string>
+    <string name="rating_icon">Rating</string>
+    <string name="add_icon">Add to watchlist</string>
     <string name="close_button">Close</string>
 
     <!-- Navigation -->
@@ -32,4 +33,10 @@
     <string name="cast_section">Cast</string>
     <string name="watchlist_title">Watchlist</string>
     <string name="watchlist_placeholder">watchlist</string>
+
+    <!-- Watchlist -->
+    <string name="remove_from_watchlist">Remove from watchlist</string>
+    <string name="empty_watchlist">Your watchlist is empty</string>
+    <string name="add_to_watchlist">Add to watchlist</string>
+    <string name="watchlist_message">Add shows to your watchlist to see them here</string>
 </resources>

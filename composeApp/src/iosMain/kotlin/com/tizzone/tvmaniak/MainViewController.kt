@@ -16,6 +16,6 @@ fun MainViewController() =
         },
     ) {
         App(
-            windowSizeClass = calculateWindowSizeClass()
+            windowSizeClass = calculateWindowSizeClass(),
         )
     }

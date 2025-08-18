@@ -10,4 +10,12 @@ sealed interface TvShowsEvent {
     data class SearchTvShows(
         val query: String,
     ) : TvShowsEvent
+
+    data class RemoveFromWatchList(
+        val showId: Int,
+    ) : TvShowsEvent
+
+    data class AddToWatchList(
+        val showId: Int,
+    ) : TvShowsEvent
 }

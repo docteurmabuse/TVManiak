@@ -38,7 +38,7 @@ class GetTvShowsUseCaseTest : KoinTest {
             // When
             val tvShowsFlow = getTvShowsUseCase()
             val pagingData = tvShowsFlow.first()
-            
+
             // Then
             assertNotNull(pagingData, "Flow should emit PagingData")
         }
@@ -49,7 +49,7 @@ class GetTvShowsUseCaseTest : KoinTest {
         runTest {
             // When
             val tvShowsFlow = getTvShowsUseCase()
-            
+
             // Then - verify flow can be collected
             val pagingData = tvShowsFlow.first()
             assertNotNull(pagingData)
@@ -61,10 +61,10 @@ class GetTvShowsUseCaseTest : KoinTest {
         runTest {
             // Given
             val expectedFlow = fakeTvShowRepositoryImpl.getTvShows()
-            
+
             // When
             val actualFlow = getTvShowsUseCase()
-            
+
             // Then - both flows should exist
             assertNotNull(expectedFlow)
             assertNotNull(actualFlow)
@@ -77,11 +77,11 @@ class GetTvShowsUseCaseTest : KoinTest {
             // When
             val firstFlow = getTvShowsUseCase()
             val secondFlow = getTvShowsUseCase()
-            
+
             // Then
             val firstData = firstFlow.first()
             val secondData = secondFlow.first()
-            
+
             assertNotNull(firstData)
             assertNotNull(secondData)
         }
@@ -92,11 +92,11 @@ class GetTvShowsUseCaseTest : KoinTest {
         runTest {
             // Given
             val tvShowsFlow = getTvShowsUseCase()
-            
+
             // When - collect the flow multiple times
             val firstCollection = tvShowsFlow.first()
             val secondCollection = tvShowsFlow.first()
-            
+
             // Then
             assertNotNull(firstCollection)
             assertNotNull(secondCollection)
@@ -108,10 +108,10 @@ class GetTvShowsUseCaseTest : KoinTest {
         runTest {
             // This test verifies that the use case properly delegates to the repository
             // and doesn't transform the flow
-            
+
             // When
             val flow = getTvShowsUseCase()
-            
+
             // Then
             assertNotNull(flow, "Should return a non-null flow")
         }
@@ -123,7 +123,7 @@ class GetTvShowsUseCaseTest : KoinTest {
             // When
             val tvShowsFlow = getTvShowsUseCase()
             val emissions = tvShowsFlow.take(1).toList()
-            
+
             // Then
             assertTrue(emissions.isNotEmpty(), "Flow should emit at least one PagingData")
             assertNotNull(emissions.first())
@@ -137,7 +137,7 @@ class GetTvShowsUseCaseTest : KoinTest {
             val flow1 = getTvShowsUseCase()
             val flow2 = getTvShowsUseCase()
             val flow3 = getTvShowsUseCase()
-            
+
             // Then - all flows should be valid
             assertNotNull(flow1.first())
             assertNotNull(flow2.first())
@@ -150,7 +150,7 @@ class GetTvShowsUseCaseTest : KoinTest {
         runTest {
             // When
             val flow = getTvShowsUseCase()
-            
+
             // Then - verify the flow is from repository
             // Since the use case just returns repository.getTvShows()
             // we verify the flow is not null and can be collected
@@ -164,7 +164,7 @@ class GetTvShowsUseCaseTest : KoinTest {
         runTest {
             // When
             val tvShowsFlow = getTvShowsUseCase()
-            
+
             // Then - collecting should not throw
             try {
                 val pagingData = tvShowsFlow.first()
