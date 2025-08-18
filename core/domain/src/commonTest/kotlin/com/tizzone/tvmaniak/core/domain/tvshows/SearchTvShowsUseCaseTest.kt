@@ -2,7 +2,6 @@ package com.tizzone.tvmaniak.core.domain.tvshows
 
 import com.tizzone.tvmaniak.core.data.repository.tvshow.FakeTvShowRepositoryImpl
 import com.tizzone.tvmaniak.core.domain.di.testDomainModule
-import com.tizzone.tvmaniak.core.model.TvShowSummary
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.koin.core.context.startKoin

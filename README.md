@@ -19,11 +19,11 @@ TVManiak is a Kotlin Multiplatform application for tracking and discovering TV s
 <div align="center">
 <table>
 <tr>
-<td><img src="screenshots/android/tvshows-grid.png" width="200"/></td>
-<td><img src="screenshots/android/tvshows-list.png" width="200"/></td>
-<td><img src="screenshots/android/tvshows-search.png" width="200"/></td>
-<td><img src="screenshots/android/tvshows-detail-1.png" width="200"/></td>
-<td><img src="screenshots/android/tvshows-detail-2.png" width="200"/></td>
+<td><img src="screenshots/android/tvshow-grid.png" width="200"/></td>
+<td><img src="screenshots/android/tvshow-list.png" width="200"/></td>
+<td><img src="screenshots/android/tvshow-search.png" width="200"/></td>
+<td><img src="screenshots/android/tvshow-detail-1.png" width="200"/></td>
+<td><img src="screenshots/android/tvshow-detail-2.png" width="200"/></td>
 <td><img src="screenshots/android/tvshow-watchlist.png" width="200"/></td>
 </tr>
 <tr>
@@ -41,13 +41,13 @@ TVManiak is a Kotlin Multiplatform application for tracking and discovering TV s
 <div align="center">
 <table>
 <tr>
-<td><img src="screenshots/ios/tvshows-grid.png" width="200"/></td>
-<td><img src="screenshots/ios/tvshows-list-19 à 00.22.37" width="200"/></td>
-<td><img src="screenshots/ios/tvshows-list-19 à 00.24.31" width="200"/></td>
+<td><img src="screenshots/ios/tvshows-list.png" width="200"/></td>
+<td><img src="screenshots/ios/tvshows-list-1" width="200"/></td>
+<td><img src="screenshots/ios/tvshows-list-2" width="200"/></td>
 </tr>
 <tr>
-<td align="center"><b>TV Shows Grid</b></td>
 <td align="center"><b>TV Shows List</b></td>
+<td align="center"><b>TV Shows Grid</b></td>
 <td align="center"><b>Watchlist</b></td>
 </tr>
 </table>

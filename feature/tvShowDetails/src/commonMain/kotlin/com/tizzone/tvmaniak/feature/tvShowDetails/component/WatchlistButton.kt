@@ -24,7 +24,7 @@ fun WatchlistButton(
         selected = true,
         onClick = { onWatchlistClick(id) },
         label = {
-            Text(if (isInWatchlist) stringResource(Res.string.remove_from_watchlist) else stringResource(Res.string.add_to_watchlist) )
+            Text(if (isInWatchlist) stringResource(Res.string.remove_from_watchlist) else stringResource(Res.string.add_to_watchlist))
         },
         modifier = modifier,
         leadingIcon = {

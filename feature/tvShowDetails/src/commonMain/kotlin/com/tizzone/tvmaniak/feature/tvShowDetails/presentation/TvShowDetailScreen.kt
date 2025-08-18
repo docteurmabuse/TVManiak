@@ -52,7 +52,7 @@ fun TvShowDetailScreen(
                 title = {},
                 actions = {
                     IconButton(
-                        onClick = onBackClick
+                        onClick = onBackClick,
                     ) {
                         Icon(
                             Icons.Default.Close,

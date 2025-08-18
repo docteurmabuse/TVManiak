@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import co.touchlab.kermit.Logger
 import com.tizzone.tvmaniak.core.designsystem.animation.SharedElementKeys
 import com.tizzone.tvmaniak.core.designsystem.animation.SharedElementTransitions
 import com.tizzone.tvmaniak.core.designsystem.component.RichHtmlText
