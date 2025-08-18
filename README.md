@@ -42,8 +42,8 @@ TVManiak is a Kotlin Multiplatform application for tracking and discovering TV s
 <table>
 <tr>
 <td><img src="screenshots/ios/tvshows-list.png" width="200"/></td>
-<td><img src="screenshots/ios/tvshows-list-1" width="200"/></td>
-<td><img src="screenshots/ios/tvshows-list-2" width="200"/></td>
+<td><img src="screenshots/ios/tvshows-list-1.png" width="200"/></td>
+<td><img src="screenshots/ios/tvshows-list-2.png" width="200"/></td>
 </tr>
 <tr>
 <td align="center"><b>TV Shows List</b></td>
